@@ -14,6 +14,30 @@
 		E22C3E211E1FA6DA006BF7C6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E22C3E1F1E1FA6DA006BF7C6 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E22C3E311E1FDDC7006BF7C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E22C3E2B1E1FDDC6006BF7C6 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06165F241D8110E600722320;
+			remoteInfo = Charts;
+		};
+		E22C3E331E1FDDC7006BF7C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E22C3E2B1E1FDDC6006BF7C6 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06B120D51D811E6200D14B02;
+			remoteInfo = ChartsRealm;
+		};
+		E22C3E351E1FDDC7006BF7C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E22C3E2B1E1FDDC6006BF7C6 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06165F2E1D8110E600722320;
+			remoteInfo = ChartsTests;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		E22C3E131E1FA6DA006BF7C6 /* Reporting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reporting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E22C3E161E1FA6DA006BF7C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -22,6 +46,7 @@
 		E22C3E1D1E1FA6DA006BF7C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E22C3E201E1FA6DA006BF7C6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E22C3E221E1FA6DA006BF7C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E22C3E2B1E1FDDC6006BF7C6 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Charts.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +65,7 @@
 			children = (
 				E22C3E151E1FA6DA006BF7C6 /* Reporting */,
 				E22C3E141E1FA6DA006BF7C6 /* Products */,
+				E22C3E2B1E1FDDC6006BF7C6 /* Charts.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -62,6 +88,16 @@
 				E22C3E221E1FA6DA006BF7C6 /* Info.plist */,
 			);
 			path = Reporting;
+			sourceTree = "<group>";
+		};
+		E22C3E2C1E1FDDC6006BF7C6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E22C3E321E1FDDC7006BF7C6 /* Charts.framework */,
+				E22C3E341E1FDDC7006BF7C6 /* ChartsRealm.framework */,
+				E22C3E361E1FDDC7006BF7C6 /* ChartsTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -96,6 +132,7 @@
 				TargetAttributes = {
 					E22C3E121E1FA6DA006BF7C6 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 8Z9Q2C694P;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -111,12 +148,42 @@
 			mainGroup = E22C3E0A1E1FA6DA006BF7C6;
 			productRefGroup = E22C3E141E1FA6DA006BF7C6 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E22C3E2C1E1FDDC6006BF7C6 /* Products */;
+					ProjectRef = E22C3E2B1E1FDDC6006BF7C6 /* Charts.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				E22C3E121E1FA6DA006BF7C6 /* Reporting */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E22C3E321E1FDDC7006BF7C6 /* Charts.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Charts.framework;
+			remoteRef = E22C3E311E1FDDC7006BF7C6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E22C3E341E1FDDC7006BF7C6 /* ChartsRealm.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ChartsRealm.framework;
+			remoteRef = E22C3E331E1FDDC7006BF7C6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E22C3E361E1FDDC7006BF7C6 /* ChartsTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ChartsTests.xctest;
+			remoteRef = E22C3E351E1FDDC7006BF7C6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		E22C3E111E1FA6DA006BF7C6 /* Resources */ = {
@@ -260,6 +327,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 8Z9Q2C694P;
 				INFOPLIST_FILE = Reporting/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = unicorn.Reporting;
@@ -272,6 +340,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 8Z9Q2C694P;
 				INFOPLIST_FILE = Reporting/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = unicorn.Reporting;
@@ -299,6 +368,7 @@
 				E22C3E271E1FA6DA006BF7C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

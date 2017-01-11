@@ -2,6 +2,7 @@ PODS:
   - Charts (3.0.1):
     - Charts/Core (= 3.0.1)
   - Charts/Core (3.0.1)
+  - DatePickerDialog (1.1.7)
   - Firebase/Core (3.11.0):
     - FirebaseAnalytics (= 3.6.0)
     - FirebaseCore (= 3.4.6)
@@ -29,11 +30,13 @@ PODS:
 
 DEPENDENCIES:
   - Charts
+  - DatePickerDialog
   - Firebase/Core
   - Firebase/Database
 
 SPEC CHECKSUMS:
   Charts: 0e84f4418e87dad6a9edde221fba37ebb51d3ba7
+  DatePickerDialog: bd5e7e92e4da2c6a8966b28d5f5d8f335d6c2c63
   Firebase: b8134e285eb33201115bc688bc5d7f112923bc1f
   FirebaseAnalytics: 9c67af0ebeb8d2146c9b4ea2616439affa947b58
   FirebaseCore: 03da1cb32615569bbc2830a22f9ad753d9a02ef5
@@ -43,6 +46,6 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
   GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
 
-PODFILE CHECKSUM: c3ab9dd0dbc0881e9c625590136cdb8f9c19b570
+PODFILE CHECKSUM: d534fcbf3aefc7de9008872001a399265345c856
 
 COCOAPODS: 1.1.1

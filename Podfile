@@ -10,5 +10,7 @@ target 'Reporting' do
 pod 'Firebase/Core'
 pod 'Firebase/Database'
 pod 'Charts'
+pod 'DatePickerDialog'
+
 
 end

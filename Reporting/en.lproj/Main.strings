@@ -1,0 +1,18 @@
+
+/* Class = "UILabel"; text = "Čas"; ObjectID = "76R-VX-152"; */
+"76R-VX-152.text" = "Čas";
+
+/* Class = "UILabel"; text = "Reporting"; ObjectID = "9K1-wu-tiO"; */
+"9K1-wu-tiO.text" = "Reporting";
+
+/* Class = "UILabel"; text = "Datum"; ObjectID = "NOz-UV-g03"; */
+"NOz-UV-g03.text" = "Datum";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "bLe-Ic-sHq"; */
+"bLe-Ic-sHq.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "jyv-hr-XtC"; */
+"jyv-hr-XtC.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Jednotlivá hodnocení"; ObjectID = "kct-gh-R8D"; */
+"kct-gh-R8D.text" = "Jednotlivá hodnocení";

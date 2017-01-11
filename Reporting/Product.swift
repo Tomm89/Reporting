@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Product {
     
@@ -19,8 +20,9 @@ class Product {
         self.timeStamp = timeStamp
     }
     
-    func getTimeStamp() -> String{
+   func getTimeStamp() -> String{
         return self.timeStamp!
         
     }
 }
+    

@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>DatePickerDialog.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>GoogleToolboxForMac.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,7 +32,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DACFBC4BB80EF847BD15836377D8AC61</key>
+		<key>05561A741573ECA6EDB13CD2BA961703</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>184A1650DC0B648BD756068E60BF2C59</key>
 		<dict>
 			<key>primary</key>
 			<true/>

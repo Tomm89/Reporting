@@ -20,7 +20,7 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
     //var items: [String] = ["Hodnocení 1", "Hodnocení 2", "Hodnocení 3"]
     let textCellIdentifier = "tablecell"
     
-    var days: [String]!
+    var days: [String]! = ["PO","UT","ST","ČT","PA","SO","NE"]
     
 
     @IBOutlet weak var textField: UITextField!
@@ -57,7 +57,7 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         
         datePickerView.datePickerMode = UIDatePickerMode.time
         sender.inputView = datePickerView
-        datePickerView.addTarget(self, action: #selector(ViewController.datePickerValueChanged), for: UIControlEvents.valueChanged)
+        datePickerView.addTarget(self, action: #selector(ViewController.timePickerValueChanged), for: UIControlEvents.valueChanged)
         
         let toolBar = UIToolbar()
         toolBar.barStyle = .default
@@ -75,10 +75,9 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
     }
     
     
-    //@IBOutlet weak var LineChart: LineChartView!
+    @IBOutlet weak var lineChart: LineChartView!
     @IBOutlet weak var rattingTable: UITableView!
     @IBOutlet weak var textTest: UITextView!
-    @IBOutlet weak var barChartView: BarChartView!
     
     
     
@@ -89,48 +88,32 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         rootRef = FIRDatabase.database().reference()
         rattingTable.delegate = self
         
-        days = ["PO","UT","ST","ČT","PA","SO","NE"]
-        let unitsSold = [20.0, 4.0, 6.0, 3.0, 12.0, 16.0, 4.0, 18.0, 2.0, 4.0, 5.0, 4.0]
+        //days = ["PO","UT","ST","ČT","PA","SO","NE"]
+        let dollars = [1453.0,2352,5431,1442,5451,6486,1173,5678,9234,1345,9411,2212]
+    
         
-     /*   self.LineChart.legend.enabled = false
-        self.LineChart.delegate = self
-        self.LineChart.chartDescription?.text = ""
-        self.LineChart.xAxis.labelPosition =  XAxis.LabelPosition.bottom       // 3
-        self.LineChart.chartDescription?.textColor = UIColor.black
-        self.LineChart.gridBackgroundColor = UIColor.darkGray
-        self.LineChart.noDataText = "No Data"
-        setChartData(dataPoints: days, values: unitsSold)  */
-        
-        setChart(dataPoints: days, values: unitsSold)
+        setChartData(days: days, values: dollars)
 
         
-        
         rootRef.observe(.value, with: { (snapshot) in
-            let newItems: [Product] = []
             
             let value = snapshot.value as? NSDictionary
             for item in value! {
-                
+                    
                 self.productArray.append(Product(ratting: item.value as! String, timeStamp:item.key as! String))
+                
+                var timeStamp: TimeInterval {
+                    return NSDate().timeIntervalSince1970 * 1000
+                }
                 
             }
             
-            for x in self.productArray {
-                let time = Double(x.getTimeStamp())
-                
-                
-                var Timestamp: TimeInterval {
-                    return NSDate().timeIntervalSince1970 * 1000
-                    
-                }
-                
                 var date = String(describing: Date())
                 let range = date.index(date.endIndex, offsetBy: -15)..<date.endIndex
                 date.removeSubrange(range)
-                self.productArray = newItems
+ 
                 self.rattingTable.reloadData()
-                
-            }
+            
             
          })
         
@@ -169,23 +152,38 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
     }
     
     
-    func setChart(dataPoints: [String], values: [Double]) {
+    func setChartData(days : [String], values: [Double]) {
+
         
-        barChartView.noDataText = "You need to provide data for the chart."
-        
-        var dataEntries: [BarChartDataEntry] = Array()
-        var counter = 0.0
-        
-        for i in 0..<dataPoints.count {
-            counter += 1.0
-            let dataEntry = BarChartDataEntry(x: values[i], y: counter)
-            dataEntries.append(dataEntry)
+        var yVals1 : [ChartDataEntry] = [ChartDataEntry]()
+        for i in 0 ..< days.count {
+            yVals1.append(ChartDataEntry(x: Double(i), y: values[i]))
         }
         
-        let chartDataSet = BarChartDataSet(values: dataEntries, label: "Time")
-        let chartData = BarChartData()
-        chartData.addDataSet(chartDataSet)
-        barChartView.data = chartData
+        // 2 - create a data set with our array
+        let set1: LineChartDataSet = LineChartDataSet(values: yVals1, label: "First Set")
+        set1.axisDependency = .left // Line will correlate with left axis values
+        set1.setColor(UIColor.red.withAlphaComponent(0.5)) // our line's opacity is 50%
+        set1.setCircleColor(UIColor.red) // our circle will be dark red
+        set1.lineWidth = 2.0
+        set1.circleRadius = 6.0 // the radius of the node circle
+        set1.fillAlpha = 65 / 255.0
+        set1.fillColor = UIColor.red
+        set1.highlightColor = UIColor.white
+        set1.drawCircleHoleEnabled = true
+        
+        //3 - create an array to store our LineChartDataSets
+        var dataSets : [LineChartDataSet] = [LineChartDataSet]()
+        dataSets.append(set1)
+        
+        //4 - pass our months in for our x-axis label value along with our dataSets
+        let data: LineChartData = LineChartData(dataSets: dataSets)
+        data.setValueTextColor(UIColor.black)
+        
+        //5 - finally set our data
+        self.lineChart.data = data
+        lineChart.notifyDataSetChanged()
+        
         
     }
 
@@ -202,8 +200,9 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
     func timePickerValueChanged(sender:UIDatePicker) {
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .none
+        dateFormatter.dateFormat =  "HH:mm"
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .medium
         textField2.text = dateFormatter.string(from: sender.date)
         
     }
@@ -220,38 +219,6 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         textField.resignFirstResponder()
         textField2.resignFirstResponder()
     }
-
-    
-  /*  func setChartData(dataPoints: [String], values: [Double]) {
-        // 1 - creating an array of data entries
-        let dollars1:[Double] = [1,2,3,4,3,2,1]
-        var yVals1 = [ChartDataEntry]()
-        for i in 0..<dataPoints.count {
-            yVals1.append(ChartDataEntry(x: dollars1[i], y: Double(i)))
-        }
-        
-        // 2 - create a data set with our array
-        let set1 = LineChartDataSet(values: yVals1, label: "First Set")
-        set1.axisDependency = .left // Line will correlate with left axis values
-        set1.setColor(UIColor.red) // our line's opacity is 50%
-        set1.setCircleColor(UIColor.cyan) // our circle will be dark red
-        
-        set1.lineWidth = 2.0
-        set1.circleRadius = 6.0 // the radius of the node circle
-        set1.fillAlpha = 65 / 255.0
-        set1.fillColor = UIColor.cyan
-        set1.highlightColor = UIColor.black
-        set1.drawCircleHoleEnabled = true
-        
-        //3 - create an array to store our LineChartDataSets
-        var dataSets : [LineChartDataSet] = [LineChartDataSet]()
-        dataSets.append(set1)
-        
-        //4 - pass our months in for our x-axis label value along with our dataSets
-        let data: LineChartData = LineChartData(dataSets: dataSets)
-        data.setValueTextColor(UIColor.white)
-        self.LineChart.data = data
-    }  */
 
     
     override func didReceiveMemoryWarning() {
@@ -288,10 +255,11 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "tablecell", for: indexPath as IndexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: textCellIdentifier, for: indexPath as IndexPath)
         
         //let row = productArray[indexPath.row]
         cell.textLabel?.text = productArray[indexPath.row].ratting
+        cell.detailTextLabel?.text = productArray[indexPath.row].timeStamp
         
         return cell
     }
@@ -307,7 +275,6 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
     @IBAction func Exit(_ sender: Any) {
         exit(0)
     }
-    
     
 }
 

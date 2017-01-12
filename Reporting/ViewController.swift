@@ -75,9 +75,10 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
     }
     
     
-    @IBOutlet weak var LineChart: LineChartView!
+    //@IBOutlet weak var LineChart: LineChartView!
     @IBOutlet weak var rattingTable: UITableView!
     @IBOutlet weak var textTest: UITextView!
+    @IBOutlet weak var barChartView: BarChartView!
     
     
     
@@ -91,14 +92,16 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         days = ["PO","UT","ST","ČT","PA","SO","NE"]
         let unitsSold = [20.0, 4.0, 6.0, 3.0, 12.0, 16.0, 4.0, 18.0, 2.0, 4.0, 5.0, 4.0]
         
-        self.LineChart.legend.enabled = false
+     /*   self.LineChart.legend.enabled = false
         self.LineChart.delegate = self
         self.LineChart.chartDescription?.text = ""
         self.LineChart.xAxis.labelPosition =  XAxis.LabelPosition.bottom       // 3
         self.LineChart.chartDescription?.textColor = UIColor.black
         self.LineChart.gridBackgroundColor = UIColor.darkGray
         self.LineChart.noDataText = "No Data"
-        setChartData(dataPoints: days, values: unitsSold)
+        setChartData(dataPoints: days, values: unitsSold)  */
+        
+        setChart(dataPoints: days, values: unitsSold)
 
         
         
@@ -165,6 +168,28 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         
     }
     
+    
+    func setChart(dataPoints: [String], values: [Double]) {
+        
+        barChartView.noDataText = "You need to provide data for the chart."
+        
+        var dataEntries: [BarChartDataEntry] = Array()
+        var counter = 0.0
+        
+        for i in 0..<dataPoints.count {
+            counter += 1.0
+            let dataEntry = BarChartDataEntry(x: values[i], y: counter)
+            dataEntries.append(dataEntry)
+        }
+        
+        let chartDataSet = BarChartDataSet(values: dataEntries, label: "Time")
+        let chartData = BarChartData()
+        chartData.addDataSet(chartDataSet)
+        barChartView.data = chartData
+        
+    }
+
+    
     func datePickerValueChanged(sender:UIDatePicker) {
         
         let dateFormatter = DateFormatter()
@@ -195,10 +220,9 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         textField.resignFirstResponder()
         textField2.resignFirstResponder()
     }
-  
+
     
-    
-    func setChartData(dataPoints: [String], values: [Double]) {
+  /*  func setChartData(dataPoints: [String], values: [Double]) {
         // 1 - creating an array of data entries
         let dollars1:[Double] = [1,2,3,4,3,2,1]
         var yVals1 = [ChartDataEntry]()
@@ -227,7 +251,7 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         let data: LineChartData = LineChartData(dataSets: dataSets)
         data.setValueTextColor(UIColor.white)
         self.LineChart.data = data
-    }
+    }  */
 
     
     override func didReceiveMemoryWarning() {

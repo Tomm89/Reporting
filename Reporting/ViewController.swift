@@ -15,15 +15,16 @@ import DatePickerDialog
 class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource, UITableViewDelegate {
 
     var dateArray: [String] = []
+    var newDays = Array(repeating:[Product](),count:7)
     var productArray: [Product] = []
-    
+
     var newArray: [Product] = []
     
     var rootRef: FIRDatabaseReference!
-    //var items: [String] = ["Hodnocení 1", "Hodnocení 2", "Hodnocení 3"]
     let textCellIdentifier = "tablecell"
+    var date: Double!
     
-        var days = [String]()
+    var days = [String]()
 
     @IBOutlet weak var textField: UITextField!
     
@@ -112,7 +113,7 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
                     var date = String(describing: Date(timeIntervalSince1970: (time!/1000)))
                     let range = date.index(date.endIndex, offsetBy: -15)..<date.endIndex
                     date.removeSubrange(range)
-                    self.rattingTable.reloadData()
+                    //self.rattingTable.reloadData()
                 }
             }
          })
@@ -162,17 +163,56 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         
         //let timestamp = NSDate().timeIntervalSince1970
         //print(timestamp)
-        
-        let datePlus = date + 24*3600
-        
+       
+       // let datePlus = date + 3*24*3600
+       // let dateMinus = date - 3*24*3600
         for x in self.productArray {
 
             
             if let timeUn = Double(x.getTimeStamp()) {
-                if timeUn/1000 > date && timeUn/1000 < datePlus {
-                    self.dateArray.append(String(describing: Date(timeIntervalSince1970: (timeUn/1000))))
+             //   if timeUn/1000 > dateMinus && timeUn/1000 < datePlus {
+               //     self.dateArray.append(String(describing: Date(timeIntervalSince1970: (timeUn/1000))))
+                    
+               // }
+                if timeUn/1000 > date-4*24*3600 && timeUn/1000 < date-3*24*3600 {
+                    newDays[0].append(x)
                     
                 }
+                if timeUn/1000 > date-3*24*3600 && timeUn/1000 < date-2*24*3600 {
+                    newDays[1].append(x)
+                    
+                }
+                
+                if timeUn/1000 > date-2*24*3600 && timeUn/1000 < date-1*24*3600 {
+                   newDays[2].append(x)
+                
+                }
+                
+                if timeUn/1000 > date-1*24*3600 && timeUn/1000 < date {
+                    newDays[3].append(x)
+                    
+                }
+                
+                if timeUn/1000 > date && timeUn/1000 < date + 1*24*3600 {
+                    newDays[4].append(x)
+                    
+                }
+                
+                if timeUn/1000 > date + 1*24*3600 && timeUn/1000 < date+2*24*3600 {
+                    newDays[5].append(x)
+                    
+                }
+                
+                if timeUn/1000 > date+2*24*3600 && timeUn/1000 < date+3*24*3600 {
+                    newDays[6].append(x)
+                    
+                }
+                
+                if timeUn/1000 > date+3*24*3600 && timeUn/1000 < date+4*24*3600 {
+                    newDays[6].append(x)
+                    
+                }
+                
             }
         }
         
@@ -180,13 +220,17 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
 
     
     func datePickerValueChanged(sender:UIDatePicker) {
-    let  date = sender.date.timeIntervalSince1970
-        pickRattingForChart(date: date)
+    date = sender.date.timeIntervalSince1970
+        
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .none
         textField.text = dateFormatter.string(from: sender.date)
+        
+        for index in 1...6 {
+            self.newDays[index].removeAll()
+        }
         
     }
     
@@ -200,11 +244,16 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
     }
     
     func doneClick() {
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .none
+        self.dateArray.removeAll()
+        pickRattingForChart(date: date)
         textField.resignFirstResponder()
         textField2.resignFirstResponder()
+        self.rattingTable.reloadData()
+        
     }
     
     func cancelClick() {
@@ -234,7 +283,7 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            productArray.remove(at: indexPath.row)
+            newDays[3].remove(at: indexPath.row)
             tableView.reloadData()
         }
     }
@@ -245,14 +294,14 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return productArray.count
+        return newDays[3].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: textCellIdentifier, for: indexPath as IndexPath)
 
-        let time = Double(productArray[indexPath.row].timeStamp!)
-        cell.textLabel?.text = productArray[indexPath.row].ratting
+        let time = Double(newDays[3][indexPath.row].timeStamp!)
+        cell.textLabel?.text = newDays[3][indexPath.row].ratting
         cell.detailTextLabel?.text =  String(describing: Date(timeIntervalSince1970: (time!/1000)))
 
         

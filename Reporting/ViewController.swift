@@ -14,14 +14,16 @@ import DatePickerDialog
 
 class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource, UITableViewDelegate {
 
-
+    var dateArray: [String] = []
     var productArray: [Product] = []
+    
+    var newArray: [Product] = []
+    
     var rootRef: FIRDatabaseReference!
     //var items: [String] = ["Hodnocení 1", "Hodnocení 2", "Hodnocení 3"]
     let textCellIdentifier = "tablecell"
     
-    var days: [String]! = ["PO","UT","ST","ČT","PA","SO","NE"]
-    
+        var days = [String]()
 
     @IBOutlet weak var textField: UITextField!
     
@@ -88,7 +90,7 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         rootRef = FIRDatabase.database().reference()
         rattingTable.delegate = self
         
-        //days = ["PO","UT","ST","ČT","PA","SO","NE"]
+        days = ["PO","UT","ST","ČT","PA","SO","NE"]
         let dollars = [1453.0,2352,5431,1442,5451,6486,1173,5678,9234,1345,9411,2212]
     
         
@@ -102,66 +104,35 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
                     
                 self.productArray.append(Product(ratting: item.value as! String, timeStamp:item.key as! String))
                 
-                var timeStamp: TimeInterval {
-                    return NSDate().timeIntervalSince1970 * 1000
+                for x in self.productArray {
+                    let time = Double(x.getTimeStamp())
+                    
+                    self.dateArray.append(String(describing: Date(timeIntervalSince1970: (time!/1000))))
+                   
+                    var date = String(describing: Date(timeIntervalSince1970: (time!/1000)))
+                    let range = date.index(date.endIndex, offsetBy: -15)..<date.endIndex
+                    date.removeSubrange(range)
+                    self.rattingTable.reloadData()
                 }
-                
             }
-            
-                var date = String(describing: Date())
-                let range = date.index(date.endIndex, offsetBy: -15)..<date.endIndex
-                date.removeSubrange(range)
- 
-                self.rattingTable.reloadData()
-            
-            
          })
-        
-        rattingTable.allowsMultipleSelectionDuringEditing = false
-        
-        
-        
-      /*  self.rootRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            // Get user value
-            
-            let value = snapshot.value as? NSDictionary
-            for item in value! {
-                
-                self.productArray.append(Product(ratting: item.value as! String, timeStamp:item.key as! String))
-                
-            }
-            
-           for x in self.productArray {
-                let time = Double(x.getTimeStamp())
-            
-            
-            var Timestamp: TimeInterval {
-                return NSDate().timeIntervalSince1970 * 1000
-                
-            }
-                
-                //var date = String(describing: Date(timeIntervalSince1970: (time!/1000)))
-                var date = String(describing: Date())
-                let range = date.index(date.endIndex, offsetBy: -15)..<date.endIndex
-                date.removeSubrange(range)
-                self.textTest.text = self.textTest.text! + String(self.getDayOfWeek(date))
-            }
-            
-        })  */
-        
     }
     
     
     func setChartData(days : [String], values: [Double]) {
 
         
-        var yVals1 : [ChartDataEntry] = [ChartDataEntry]()
+        var yVals1 : [ChartDataEntry] = []
+        
         for i in 0 ..< days.count {
             yVals1.append(ChartDataEntry(x: Double(i), y: values[i]))
+
         }
         
         // 2 - create a data set with our array
-        let set1: LineChartDataSet = LineChartDataSet(values: yVals1, label: "First Set")
+        let set1: LineChartDataSet = LineChartDataSet(values: yVals1, label: "Hodnocení")
+        //let lineChartData = LineChartData(xVals: days, dataSet: LineChartDataSet)
+        lineChart.animate(xAxisDuration: 2.0)
         set1.axisDependency = .left // Line will correlate with left axis values
         set1.setColor(UIColor.red.withAlphaComponent(0.5)) // our line's opacity is 50%
         set1.setCircleColor(UIColor.red) // our circle will be dark red
@@ -186,9 +157,31 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         
         
     }
+    
+    func pickRattingForChart (date: Double) {
+        
+        //let timestamp = NSDate().timeIntervalSince1970
+        //print(timestamp)
+        
+        let datePlus = date + 24*3600
+        
+        for x in self.productArray {
+
+            
+            if let timeUn = Double(x.getTimeStamp()) {
+                if timeUn/1000 > date && timeUn/1000 < datePlus {
+                    self.dateArray.append(String(describing: Date(timeIntervalSince1970: (timeUn/1000))))
+                    
+                }
+            }
+        }
+        
+    }
 
     
     func datePickerValueChanged(sender:UIDatePicker) {
+    let  date = sender.date.timeIntervalSince1970
+        pickRattingForChart(date: date)
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
@@ -200,7 +193,6 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
     func timePickerValueChanged(sender:UIDatePicker) {
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat =  "HH:mm"
         dateFormatter.dateStyle = .none
         dateFormatter.timeStyle = .medium
         textField2.text = dateFormatter.string(from: sender.date)
@@ -231,6 +223,7 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         
         let formatter  = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
+        formatter.dateFormat = "HH mm"
         let todayDate = formatter.date(from: today)
         let myCalendar = Calendar(identifier: .gregorian)
         var weekDay = myCalendar.component(.weekday, from: todayDate!)
@@ -245,7 +238,8 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
             tableView.reloadData()
         }
     }
-
+    
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -256,10 +250,11 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: textCellIdentifier, for: indexPath as IndexPath)
-        
-        //let row = productArray[indexPath.row]
+
+        let time = Double(productArray[indexPath.row].timeStamp!)
         cell.textLabel?.text = productArray[indexPath.row].ratting
-        cell.detailTextLabel?.text = productArray[indexPath.row].timeStamp
+        cell.detailTextLabel?.text =  String(describing: Date(timeIntervalSince1970: (time!/1000)))
+
         
         return cell
     }

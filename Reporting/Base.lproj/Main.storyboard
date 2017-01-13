@@ -186,7 +186,7 @@
             </objects>
             <point key="canvasLocation" x="-12068" y="-1411.8440779610196"/>
         </scene>
-        <!--Title-->
+        <!--View Controller-->
         <scene sceneID="yIC-Ha-XDX">
             <objects>
                 <viewController id="tSb-cq-f5N" sceneMemberID="viewController">
@@ -198,29 +198,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mGv-jS-eAW">
-                                <rect key="frame" x="0.0" y="72" width="187" height="156"/>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lhe-pv-wN6">
-                                <rect key="frame" x="187" y="72" width="188" height="156"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jR8-gN-tuN">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Hodnocení" id="WUh-uE-nFi">
+                                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="cancel" id="OfB-JT-ac5">
+                                            <color key="tintColor" red="0.19215686269999999" green="0.69411764710000001" blue="0.86666666670000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="59V-b6-vBw" firstAttribute="top" secondItem="mGv-jS-eAW" secondAttribute="bottom" constant="395" id="0Yd-5d-IxP"/>
-                            <constraint firstItem="mGv-jS-eAW" firstAttribute="top" secondItem="aJm-Ih-efA" secondAttribute="bottom" constant="52" id="25V-DV-fmK"/>
-                            <constraint firstItem="mGv-jS-eAW" firstAttribute="width" secondItem="18k-Au-LeK" secondAttribute="width" multiplier="1:2" id="5ll-qj-gxT"/>
-                            <constraint firstItem="mGv-jS-eAW" firstAttribute="leading" secondItem="18k-Au-LeK" secondAttribute="leading" id="7xD-tv-tII"/>
-                            <constraint firstAttribute="trailing" secondItem="lhe-pv-wN6" secondAttribute="trailing" id="Qga-s5-VUr"/>
-                            <constraint firstItem="lhe-pv-wN6" firstAttribute="leading" secondItem="mGv-jS-eAW" secondAttribute="trailing" id="ZVg-ee-BM0"/>
-                            <constraint firstItem="lhe-pv-wN6" firstAttribute="bottom" secondItem="mGv-jS-eAW" secondAttribute="bottom" id="cSY-KK-tNK"/>
-                            <constraint firstItem="lhe-pv-wN6" firstAttribute="top" secondItem="aJm-Ih-efA" secondAttribute="bottom" constant="52" id="zum-ek-QJe"/>
-                        </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Title" id="pzd-c2-H9M"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6r0-Pi-4lA" userLabel="First Responder" sceneMemberID="firstResponder"/>

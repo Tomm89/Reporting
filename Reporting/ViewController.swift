@@ -16,6 +16,7 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
 
     var dateArray: [String] = []
     var newDays = Array(repeating:[Product](),count:7)
+    var newChart = Array(repeating: Array(repeating:Int(),count:4),count:7)
     var productArray: [Product] = []
 
     var newArray: [Product] = []
@@ -94,8 +95,9 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         days = ["PO","UT","ST","ČT","PA","SO","NE"]
         let dollars = [1453.0,2352,5431,1442,5451,6486,1173,5678,9234,1345,9411,2212]
     
+       
         
-        setChartData(days: days, values: dollars)
+        setChartData(date: days, values: dollars)
 
         
         rootRef.observe(.value, with: { (snapshot) in
@@ -120,13 +122,21 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
     }
     
     
-    func setChartData(days : [String], values: [Double]) {
-
+    func setChartData(date : [String], values: [Double]) {
+        for root in 0...6 {
+            for child in 0..<newDays[root].count {
+                let x = Int(newDays[root][child].ratting!)
+                
+                newChart[root][x!] = newChart[root][x!] + 1
+                
+                
+            }
+        }
         
         var yVals1 : [ChartDataEntry] = []
         
         for i in 0 ..< days.count {
-            yVals1.append(ChartDataEntry(x: Double(i), y: values[i]))
+            yVals1.append(ChartDataEntry(x: Double(i), y: Double(newChart[i][0])))
 
         }
         
@@ -137,17 +147,36 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         set1.axisDependency = .left // Line will correlate with left axis values
         set1.setColor(UIColor.red.withAlphaComponent(0.5)) // our line's opacity is 50%
         set1.setCircleColor(UIColor.red) // our circle will be dark red
-        set1.lineWidth = 2.0
+        set1.lineWidth = 4.0
         set1.circleRadius = 6.0 // the radius of the node circle
         set1.fillAlpha = 65 / 255.0
         set1.fillColor = UIColor.red
         set1.highlightColor = UIColor.white
         set1.drawCircleHoleEnabled = true
         
+        var yVals2 : [ChartDataEntry] = []
+        for i in 0 ..< days.count {
+            yVals2.append(ChartDataEntry(x: Double(i), y: Double(newChart[i][1])))
+            
+        }
         //3 - create an array to store our LineChartDataSets
         var dataSets : [LineChartDataSet] = [LineChartDataSet]()
-        dataSets.append(set1)
+       
+        let set2: LineChartDataSet = LineChartDataSet(values: yVals2, label: "Hodnocení2")
+        //let lineChartData = LineChartData(xVals: days, dataSet: LineChartDataSet)
+        lineChart.animate(xAxisDuration: 2.0)
+        set2.axisDependency = .left // Line will correlate with left axis values
+        set2.setColor(UIColor.blue.withAlphaComponent(0.5)) // our line's opacity is 50%
+        set2.setCircleColor(UIColor.blue) // our circle will be dark red
+        set2.lineWidth = 8.0
+        set2.circleRadius = 6.0 // the radius of the node circle
+        set2.fillAlpha = 65 / 255.0
+        set2.fillColor = UIColor.blue
+        set2.highlightColor = UIColor.white
+        set2.drawCircleHoleEnabled = true
         
+        dataSets.append(set2)
+        dataSets.append(set1)
         //4 - pass our months in for our x-axis label value along with our dataSets
         let data: LineChartData = LineChartData(dataSets: dataSets)
         data.setValueTextColor(UIColor.black)
@@ -155,7 +184,6 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         //5 - finally set our data
         self.lineChart.data = data
         lineChart.notifyDataSetChanged()
-        
         
     }
     
@@ -172,8 +200,25 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
             if let timeUn = Double(x.getTimeStamp()) {
              //   if timeUn/1000 > dateMinus && timeUn/1000 < datePlus {
                //     self.dateArray.append(String(describing: Date(timeIntervalSince1970: (timeUn/1000))))
-                    
+                
                // }
+                var plus:Double
+                var minus:Double
+                for index in 0...6 {
+                    plus = Double((index - 4)*24*3600)
+                    minus = Double((index - 3)*24*3600)
+                    if timeUn/1000 > date+plus && timeUn/1000 < date+minus {
+                        newDays[index].append(x)
+                        
+                    }
+                }
+                days = ["PO","UT","ST","ČT","PA","SO","NE"]
+                let dollars = [1453.0,2352,5431,1442,5451,6486,1173,5678,9234,1345,9411,2212]
+                
+                
+                setChartData(date: days, values: dollars)
+
+                /*
                 if timeUn/1000 > date-4*24*3600 && timeUn/1000 < date-3*24*3600 {
                     newDays[0].append(x)
                     
@@ -211,11 +256,9 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
                 if timeUn/1000 > date+3*24*3600 && timeUn/1000 < date+4*24*3600 {
                     newDays[6].append(x)
                     
-                }
-                
+                } */
             }
         }
-        
     }
 
     
@@ -228,7 +271,7 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         dateFormatter.timeStyle = .none
         textField.text = dateFormatter.string(from: sender.date)
         
-        for index in 1...6 {
+        for index in 0...6 {
             self.newDays[index].removeAll()
         }
         

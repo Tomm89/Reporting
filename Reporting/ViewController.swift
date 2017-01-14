@@ -115,7 +115,7 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
                     var date = String(describing: Date(timeIntervalSince1970: (time!/1000)))
                     let range = date.index(date.endIndex, offsetBy: -15)..<date.endIndex
                     date.removeSubrange(range)
-                    //self.rattingTable.reloadData()
+                    self.rattingTable.reloadData()
                 }
             }
          })
@@ -168,7 +168,7 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
         set2.axisDependency = .left // Line will correlate with left axis values
         set2.setColor(UIColor.blue.withAlphaComponent(0.5)) // our line's opacity is 50%
         set2.setCircleColor(UIColor.blue) // our circle will be dark red
-        set2.lineWidth = 8.0
+        set2.lineWidth = 4.0
         set2.circleRadius = 6.0 // the radius of the node circle
         set2.fillAlpha = 65 / 255.0
         set2.fillColor = UIColor.blue
@@ -212,11 +212,12 @@ class ViewController: UIViewController, ChartViewDelegate, UITableViewDataSource
                         
                     }
                 }
+                
                 days = ["PO","UT","ST","ČT","PA","SO","NE"]
                 let dollars = [1453.0,2352,5431,1442,5451,6486,1173,5678,9234,1345,9411,2212]
                 
-                
                 setChartData(date: days, values: dollars)
+                
 
                 /*
                 if timeUn/1000 > date-4*24*3600 && timeUn/1000 < date-3*24*3600 {
